@@ -1,4 +1,4 @@
-const MD5Pwd = require('../utils/password-handle')
+const {bcryptOfPwd} = require('../utils/password-handle')
 const {
   EMAIL_OR_PASSWORD_IS_NULL,
   EMAIL_OR_PASSWORD_IS_INVALID,
@@ -29,8 +29,8 @@ async function verifyUser(ctx,next) {
     return ctx.app.emit('error',err,ctx)
   }
 
-  ctx.request.body.pwd = MD5Pwd(pwd)
-  next()
+  ctx.request.body.pwd = bcryptOfPwd(pwd)
+  await next()
 }
 
 module.exports={verifyUser}

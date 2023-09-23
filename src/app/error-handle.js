@@ -16,6 +16,18 @@ function errorHandle(err,ctx) {
       status = 200;
       message = { code: 1003, msg: "邮箱已被使用！" };
       break;
+    case errorType.EMAIL_IS_EXIST:
+      status = 200;
+      message = { code: 1004, msg: "用户不存在！" };
+      break;
+    case errorType.PASSWORD_IS_INCORRECT:
+      status = 200;
+      message = { code: 1005, msg: "密码错误！" };
+      break;
+    case errorType.UNAUTHORIZATION:
+      status = 200;
+      message = { code: 1005, msg: "用户未登录！" };
+      break;
     default:
       status = 404;
       message = "Not Found~";
