@@ -4,6 +4,7 @@ const EMAIL_IS_DUPLICATED='email_is_duplicated'
 const EMAIL_IS_EXIST = 'email_is_exist'
 const PASSWORD_IS_INCORRECT = 'password_is_incorrect'
 const UNAUTHORIZATION="unauthorization"
+const UPLOAD_IMAGE_FAIL="upload_image_fail"
 
 module.exports = {
   EMAIL_OR_PASSWORD_IS_NULL,
@@ -11,5 +12,6 @@ module.exports = {
   EMAIL_IS_DUPLICATED,
   EMAIL_IS_EXIST,
   PASSWORD_IS_INCORRECT,
-  UNAUTHORIZATION
+  UNAUTHORIZATION,
+  UPLOAD_IMAGE_FAIL
 }

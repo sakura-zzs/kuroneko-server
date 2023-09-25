@@ -1,4 +1,4 @@
-const route = require("koa-router")
+const route = require("@koa/router")
 const {
   getUserList,
   getUserProfile,

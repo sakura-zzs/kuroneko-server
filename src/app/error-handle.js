@@ -26,8 +26,11 @@ function errorHandle(err,ctx) {
       break;
     case errorType.UNAUTHORIZATION:
       status = 200;
-      message = { code: 1005, msg: "用户未登录！" };
+      message = { code: 1006, msg: "用户未登录！" };
       break;
+    case errorType.UPLOAD_IMAGE_FAIL:
+      status = 200;
+      message={code:2001,msg:"图片文件上传失败！"}
     default:
       status = 404;
       message = "Not Found~";

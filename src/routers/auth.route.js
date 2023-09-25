@@ -1,5 +1,6 @@
-const route = require('koa-router')
-const {verifyLogin,verifyAuth}=require('../middlewares/auth.middleware')
+const route = require('@koa/router')
+const {verifyLogin,verifyAuth}
+=require('../middlewares/auth.middleware')
 const {login,success}=require('../controllers/auth.controller')
 const authRouter = new route()
 

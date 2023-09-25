@@ -5,10 +5,10 @@ class AuthController{
   async login(ctx,next) {
     console.log("用户校验成功...")
 
-    const { email, pwd } = ctx.user
+    const { userId, email, pwd } = ctx.user
     //使用私钥颁发token
     const token = jwt.sign(
-      { email, pwd },
+      { id:userId,email, pwd },
       PRIVATE_KEY,
       {
         //token过期时间，秒
