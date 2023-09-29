@@ -1,6 +1,6 @@
 const multer = require('@koa/multer')
 const { MOMENT_PATH } = require('../constants/file-path')
-const { UPLOAD_IMAGE_FAIL } = require('../constants/error-type')
+// const { UPLOAD_IMAGE_FAIL } = require('../constants/error-type')
 const jimp=require('jimp')
 const path=require('path')
 
