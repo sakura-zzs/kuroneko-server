@@ -3,13 +3,17 @@ const useRoutes = require('../routers')
 const bodyParse=require('koa-bodyparser')
 const errorHandle = require('./error-handle')
 const static=require('koa-static')
-const {MOMENT_PATH}=require('../constants/file-path')
+const {MOMENT_PATH,TEST_PATH}=require('../constants/file-path')
 
 const app = new Koa()
 
 app.useRoutes = useRoutes
-
+// app.use(async(ctx, next) => {
+//   console.log(ctx.req.method,ctx.req.url)
+//   await next()
+// })
 app.use(static(MOMENT_PATH))
+app.use(static(TEST_PATH))
 app.use(bodyParse())
 app.useRoutes()
 //错误处理

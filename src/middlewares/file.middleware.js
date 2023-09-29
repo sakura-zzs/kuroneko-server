@@ -4,7 +4,7 @@ const { UPLOAD_IMAGE_FAIL } = require('../constants/error-type')
 const jimp=require('jimp')
 const path=require('path')
 
-const uploadMomentHandler = async (ctx, next)=>{
+// const uploadMomentHandler = async (ctx, next)=>{
   //配置上传目录，自定义文件名
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -29,13 +29,16 @@ const uploadMomentMulter = multer({
 //设置上传文件数组名和最大上传数量
   //客户端发起文件上传的字段也需要为momentImg
   //利用array返回一个koa中间件函数，而koa中间件返回promise对文件上传进行错误处理
-  const err = await uploadMomentMulter.array('momentImg', 9)(ctx, next).then(res => res).catch(err => err)
-  if (err) {
-    const error = new Error(UPLOAD_IMAGE_FAIL)
-    ctx.app.emit('error',error,ctx)
-  }
-  await next()
-}
+ const uploadMomentHandler= uploadMomentMulter.array('momentImg', 9)
+  //但是会导致返回500
+  // const err = await uploadMomentMulter.array('momentImg', 9)(ctx, next).then(res => res).catch(err => err)
+  // if (err) {
+  //   const error = new Error(UPLOAD_IMAGE_FAIL)
+  //   ctx.app.emit('error',error,ctx)
+  // }
+//   ctx.body="middleware00~"
+//   await next()
+// }
 // 使用jimp库将图片进行尺寸定制
 const uploadResize = async (ctx, next)=>{
   const files = ctx.files;
@@ -52,6 +55,7 @@ const uploadResize = async (ctx, next)=>{
       image.resize(320, jimp.AUTO).write(`${originPath}-small${type}`)    
     })
   }
+  ctx.body="middleware~"
   await next()
 }
 

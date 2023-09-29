@@ -26,7 +26,7 @@ class FileController{
       const fileUrl = await getImageUrlByFileName(filename)
       urlList.push(fileUrl)
     }
-    console.log(urlList)
+    // console.log(urlList)
     //返回文件地址数组
     ctx.body = {
       imgLinks:urlList

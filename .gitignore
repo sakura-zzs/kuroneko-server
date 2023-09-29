@@ -2,8 +2,7 @@
 node_modules/
 
 # 忽略测试代码
-test.html
-test.js
+src/test
 # 忽略日志文件
 *.log
 

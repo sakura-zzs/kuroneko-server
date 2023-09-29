@@ -70,6 +70,7 @@ const verifyAuth =async (ctx, next) => {
     const err = new Error(UNAUTHORIZATION)
     return ctx.app.emit('error',err,ctx)
   }
+
   ctx.body = "验证授权通过！"
   await next()
 }
