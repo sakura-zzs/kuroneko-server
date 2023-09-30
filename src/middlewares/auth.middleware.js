@@ -3,13 +3,15 @@ const {
   EMAIL_OR_PASSWORD_IS_INVALID,
   EMAIL_IS_EXIST,
   PASSWORD_IS_INCORRECT,
-  UNAUTHORIZATION
+  UNAUTHORIZATION,
+  USER_IS_NOT_PERMISSION
 } = require('../constants/error-type')
 const {PUBLIC_KEY}=require('../app/config')
 const bcrypt = require('bcrypt')
 const jwt=require('jsonwebtoken')
 
 const userService = require('../services/user.service')
+const {checkResourcePermission}=require('../services/auth.service')
 
 const verifyLogin = async (ctx, next) => {
 
@@ -74,8 +76,24 @@ const verifyAuth =async (ctx, next) => {
   ctx.body = "验证授权通过！"
   await next()
 }
+//验证用户对数据进行删改的权限
+const verifyPermission =async (ctx, next,tableName) => {
+  const { id } = ctx.user
+  if (ctx.query) {
+    const resourceId=ctx.query.id
+  }
+  const resourceId = ctx.params.id
+  const res = await checkResourcePermission("moment", id, resourceId)
+  if (!res) {
+    const err = new Error(USER_IS_NOT_PERMISSION)
+    return ctx.app.emit('error',err,ctx)
+  }
+  ctx.body = "资源权限认证通过！"
+  await next()
+}
 
 module.exports = {
   verifyLogin,
-  verifyAuth
+  verifyAuth,
+  verifyPermission
 }

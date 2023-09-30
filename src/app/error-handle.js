@@ -30,7 +30,12 @@ function errorHandle(err,ctx) {
       break;
     case errorType.UPLOAD_IMAGE_FAIL:
       status = 200;
-      message={code:2001,msg:"图片文件上传失败！"}
+      message = { code: 2001, msg: "图片文件上传失败！" }
+      break;
+    case errorType.USER_IS_NOT_PERMISSION:
+      status = 200;
+      message = { code: 1007, msg: "用户无此权限！" }
+      break;
     default:
       status = 404;
       message = "Not Found~";

@@ -7,7 +7,9 @@ const pool = mysql.createPool({
   port:config.MYSQL_PORT,
   database:config.MYSQL_DATABASE,
   user:config.MYSQL_USER,
-  password:config.MYSQL_PASSWORD,
+  password: config.MYSQL_PASSWORD,
+  // timezone: '+08:00',
+  dateStrings:true,//设置时区虽然解决了时区问题，但是返回的是js的DATE对象，使用dateStrings让mysql2强制返回字符串格式时间
 })
 
 //监听数据库连接状态

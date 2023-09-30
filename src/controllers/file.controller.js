@@ -1,4 +1,4 @@
-const { saveMomentImage,getImageUrlByFileName } = require('../services/file.service')
+const { saveMomentImage,getImageUrlByFileName,deleteMomentImageById,updateMomentIdById } = require('../services/file.service')
 const {
   APP_PORT,
   APP_HOST}=require('../app/config')
@@ -31,6 +31,17 @@ class FileController{
     ctx.body = {
       imgLinks:urlList
     }
+  }
+  async deleteMoment(ctx,next) {
+    const { id } = ctx.query
+    const res = await deleteMomentImageById(id)
+    ctx.body=res
+  }
+  async updateMomentId(ctx, next) {
+    const { id } = ctx.query
+    const { momentId } = ctx.request.body
+    const res = await updateMomentIdById(id, momentId)
+    ctx.body=res
   }
 }
 
