@@ -36,6 +36,10 @@ function errorHandle(err,ctx) {
       status = 200;
       message = { code: 1007, msg: "用户无此权限！" }
       break;
+    case errorType.LABEL_IS_EXIST:
+      status = 200;
+      message = { code: 3001, msg: "标签已存在！" }
+      break;
     default:
       status = 404;
       message = "Not Found~";
