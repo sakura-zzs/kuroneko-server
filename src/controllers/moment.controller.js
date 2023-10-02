@@ -1,4 +1,5 @@
-const {createMoment,getMomentListByUserId,getAllMoment,getMomentById,updateMomentById,deleteMomentById}=require('../services/moment.service')
+const {createMoment,getMomentListByUserId,getAllMoment,getMomentById,updateMomentById,deleteMomentById,bindLabel}=require('../services/moment.service')
+const {getLabelByName}=require('../services/label.service')
 
 class MomentController{
   async create(ctx, next) {
@@ -30,6 +31,18 @@ class MomentController{
   async deleteMoment(ctx, next) {
     const { id } = ctx.params
     const res = await deleteMomentById(id)
+    ctx.body=res
+  }
+  async addCustomLabel(ctx,next) {
+    const labelId = ctx.labelId
+    const momentId = ctx.params.id
+    const res= await bindLabel(labelId,momentId)
+    ctx.body=res
+  }
+  async addLabel(ctx, next) {
+    const momentId = ctx.params.id
+    const labelId=ctx.labelId
+    const res= await bindLabel(labelId,momentId)
     ctx.body=res
   }
 }

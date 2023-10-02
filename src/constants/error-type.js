@@ -6,7 +6,8 @@ const PASSWORD_IS_INCORRECT = 'password_is_incorrect'
 const UNAUTHORIZATION="unauthorization"
 const UPLOAD_IMAGE_FAIL = "upload_image_fail"
 const USER_IS_NOT_PERMISSION = "user_is_not_permission"
-const LABEL_IS_EXIST="label_is_exist"
+const LABEL_IS_EXIST = "label_is_exist"
+const LABEL_IS_ADDED="label_is_added"
 
 module.exports = {
   EMAIL_OR_PASSWORD_IS_NULL,
@@ -17,5 +18,6 @@ module.exports = {
   UNAUTHORIZATION,
   UPLOAD_IMAGE_FAIL,
   USER_IS_NOT_PERMISSION,
-  LABEL_IS_EXIST
+  LABEL_IS_EXIST,
+  LABEL_IS_ADDED
 }

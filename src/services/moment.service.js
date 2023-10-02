@@ -31,6 +31,11 @@ class MomentService{
     const [res] = await connection.execute(statement, [id])
     return res
   }
+  async bindLabel(labelId,momentId) {
+    const statement = `INSERT INTO moment_label (momentId,labelId) VALUES(?,?);`
+    const [res] = await connection.execute(statement, [momentId, labelId])
+    return res
+  }
 }
 
 module.exports=new MomentService()

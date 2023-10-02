@@ -40,6 +40,10 @@ function errorHandle(err,ctx) {
       status = 200;
       message = { code: 3001, msg: "标签已存在！" }
       break;
+    case errorType.LABEL_IS_ADDED:
+      status = 200;
+      message = { code: 3002, msg: "动态已添加该标签！" }
+      break;
     default:
       status = 404;
       message = "Not Found~";
