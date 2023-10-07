@@ -1,5 +1,5 @@
 const multer = require('@koa/multer')
-const { MOMENT_PATH } = require('../constants/file-path')
+const { MOMENT_PATH,COMMENT_PATH,AVATAR_PATH,SPACE_PATH } = require('../constants/file-path')
 // const { UPLOAD_IMAGE_FAIL } = require('../constants/error-type')
 const jimp=require('jimp')
 const path=require('path')
@@ -39,6 +39,56 @@ const uploadMomentMulter = multer({
 //   ctx.body="middleware00~"
 //   await next()
 // }
+
+const commentStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // file为上传文件的信息，cb为回调函数，cb有两个参数，第一个是错误信息，第二个是文件保存的路径
+    cb(null,COMMENT_PATH)
+  },
+  filename: (req, file, cb)=>{
+    //设置文件名为当前时间戳+后缀
+    cb(null,Date.now()+path.extname(file.originalname))
+  }
+})
+const uploadCommentMulter = multer({
+  storage: commentStorage,
+  limits
+})
+const uploadCommentHandler = uploadCommentMulter.array('commentImg', 9)
+
+const avatarStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // file为上传文件的信息，cb为回调函数，cb有两个参数，第一个是错误信息，第二个是文件保存的路径
+    cb(null,AVATAR_PATH)
+  },
+  filename: (req, file, cb)=>{
+    //设置文件名为当前时间戳+后缀
+    cb(null,Date.now()+path.extname(file.originalname))
+  }
+})
+const uploadAvatarMulter = multer({
+  storage: avatarStorage,
+  limits
+})
+const uploadAvatarHandler = uploadAvatarMulter.single('avatarImg')
+
+
+const spaceStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // file为上传文件的信息，cb为回调函数，cb有两个参数，第一个是错误信息，第二个是文件保存的路径
+    cb(null,SPACE_PATH)
+  },
+  filename: (req, file, cb)=>{
+    //设置文件名为当前时间戳+后缀
+    cb(null,Date.now()+path.extname(file.originalname))
+  }
+})
+const uploadSpaceMulter = multer({
+  storage: spaceStorage,
+  limits
+})
+const uploadSpaceHandler = uploadSpaceMulter.array('spaceImg', 5)
+
 // 使用jimp库将图片进行尺寸定制
 const uploadResize = async (ctx, next)=>{
   const files = ctx.files;
@@ -59,7 +109,27 @@ const uploadResize = async (ctx, next)=>{
   await next()
 }
 
+//使用jimp库进行圆形裁剪生成头像
+const circleCutAvatar = async (ctx, next)=>{
+  const file = ctx.file;
+
+    //获取原图路径和后缀名
+    const type = path.extname(file.filename)
+    const filename=file.filename.replace(type,"")
+    const originPath = path.join(file.destination, filename)
+  //read可以读取图片，resize('宽'，'高')，高设为auto会随宽等比缩放，write处理过后的图片存放位置
+  //circle可以对图片进行圆形裁剪，三个参数分别为裁剪半径，和裁剪中心
+    jimp.read(file.path).then(image => {
+      image.resize(100, jimp.AUTO).circle({radius:50,x:50,y:50}).write(`${originPath}-avatar${type}`)
+    })
+  await next()
+}
+
 module.exports = {
   uploadMomentHandler,
-  uploadResize
+  uploadCommentHandler,
+  uploadAvatarHandler,
+  uploadSpaceHandler,
+  uploadResize,
+  circleCutAvatar
 }

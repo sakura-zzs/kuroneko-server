@@ -34,7 +34,7 @@ function errorHandle(err,ctx) {
       break;
     case errorType.USER_IS_NOT_PERMISSION:
       status = 200;
-      message = { code: 1007, msg: "用户无此权限！" }
+      message = { code: 1007, msg: "用户无此权限或无此数据！" }
       break;
     case errorType.LABEL_IS_EXIST:
       status = 200;

@@ -77,21 +77,31 @@ const verifyAuth =async (ctx, next) => {
   await next()
 }
 //验证用户对数据进行删改的权限
-const verifyPermission =async (ctx, next) => {
+const verifyPermission = async (ctx, next) => {
+  const {commentId}=ctx.request.body
   const { id } = ctx.user
   let resourceId = ""
   let tableName=""
   if (ctx.query) {
     resourceId=ctx.query.id
+  } else {
+    resourceId = ctx.params.id?ctx.params.id:ctx.params.commentId
   }
-    resourceId = ctx.params.id
   const url = ctx.url
   if (url.indexOf("/upload/moment") != -1) {
-    tableName="moment_img"
-  } else if (url.indexOf("/moment")!=-1) {
-    tableName="moment"
+    tableName = "moment_img"
+  } else if (url.indexOf("/upload/comment") != -1) {
+    tableName="comment_img"
+  } else if (url.indexOf("/upload/avatar") != -1) {
+    tableName="avatar_img"
+  } else if (url.indexOf("/upload/space") != -1) {
+    tableName="space_img"
+  } else if (url.indexOf("/moment") != -1) {
+    tableName = "moment"
+  } else if (url.indexOf('/comment') != -1) {
+    tableName="comment"
   }
-  const res = await checkResourcePermission("moment", id, resourceId)
+  const res = await checkResourcePermission(tableName, id, resourceId,commentId)
   if (!res) {
     const err = new Error(USER_IS_NOT_PERMISSION)
     return ctx.app.emit('error',err,ctx)
