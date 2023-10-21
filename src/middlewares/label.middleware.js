@@ -1,5 +1,5 @@
-const {LABEL_IS_EXIST,LABEL_IS_ADDED}=require('../constants/error-type')
-const { getLabelByName,createLabel,getLabelByMomentIdAndLabelId } = require('../services/label.service')
+const { LABEL_IS_EXIST, LABEL_IS_ADDED } = require('../constants/error-type')
+const { getLabelByName, createLabel, getLabelByMomentIdAndLabelId } = require('../services/label.service')
 
 
 //为动态添加标签时标签是否存在
@@ -10,11 +10,11 @@ const verifyAddCustomLabelExists = async (ctx, next) => {
   const res = await getLabelByName(labelName)
   if (res) {
     const err = new Error(LABEL_IS_EXIST)
-    return ctx.app.emit('error',err,ctx)
+    return ctx.app.emit('error', err, ctx)
   }
   await createLabel(labelName)
   const { id } = await getLabelByName(labelName)
-  ctx.labelId=id
+  ctx.labelId = id
   await next()
 }
 
@@ -24,7 +24,7 @@ const verifyLabelExists = async (ctx, next) => {
   const res = await getLabelByName(name)
   if (res) {
     const err = new Error(LABEL_IS_EXIST)
-    return ctx.app.emit('error',err,ctx)
+    return ctx.app.emit('error', err, ctx)
   }
   await next()
 }
@@ -32,12 +32,12 @@ const verifyLabelExists = async (ctx, next) => {
 //验证动态是否已添加该标签
 const verifyMomentAddedLabel = async (ctx, next) => {
   const momentId = ctx.params.id
-  const {labelName} = ctx.request.body
+  const { labelName } = ctx.request.body
   const { id } = await getLabelByName(labelName)
   const res = await getLabelByMomentIdAndLabelId(momentId, id)
-  if (res) {
+  if (res.length) {
     const err = new Error(LABEL_IS_ADDED)
-    return ctx.app.emit('error',err,ctx)
+    return ctx.app.emit('error', err, ctx)
   }
   ctx.labelId = id
   await next()

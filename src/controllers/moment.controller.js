@@ -42,6 +42,7 @@ class MomentController {
   async addLabel(ctx, next) {
     const momentId = ctx.params.id
     const labelId = ctx.labelId
+    console.log(momentId, labelId)
     const res = await bindLabel(labelId, momentId)
     ctx.body = res
   }

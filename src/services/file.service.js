@@ -1,10 +1,10 @@
-const connection=require('../app/database')
-class FileService{
+const connection = require('../app/database')
+class FileService {
   async saveMomentImage(...data) {
     //将图片地址保存至数据库
     const [filename, mimetype, size, url, id] = data
     const statement = `INSERT INTO moment_img (filename,mimetype,size,url,userId)VALUES(?,?,?,?,?);`
-    return await connection.execute(statement,[filename, mimetype, size, url, id])
+    return await connection.execute(statement, [filename, mimetype, size, url, id])
   }
   //根据文件名返回图片地址和id
   async getImageUrlByFileName(filename) {
@@ -28,7 +28,7 @@ class FileService{
     //将图片地址保存至数据库
     const [filename, mimetype, size, url, id] = data
     const statement = `INSERT INTO comment_img (filename,mimetype,size,url,userId)VALUES(?,?,?,?,?);`
-    return await connection.execute(statement,[filename, mimetype, size, url, id])
+    return await connection.execute(statement, [filename, mimetype, size, url, id])
   }
   async getCommentImageUrlByFileName(filename) {
     const statement = `SELECT url,id FROM comment_img WHERE filename=?;`
@@ -52,7 +52,7 @@ class FileService{
     //将图片地址保存至数据库
     const [filename, mimetype, size, url, id] = data
     const statement = `INSERT INTO avatar_img (filename,mimetype,size,url,userId)VALUES(?,?,?,?,?);`
-    return await connection.execute(statement,[filename, mimetype, size, url, id])
+    return await connection.execute(statement, [filename, mimetype, size, url, id])
   }
   async getAvatarImageUrlByFileName(filename) {
     const statement = `SELECT url,id FROM avatar_img WHERE filename=?;`
@@ -63,7 +63,7 @@ class FileService{
     //将图片地址保存至数据库
     const [filename, mimetype, size, url, id] = data
     const statement = `INSERT INTO space_img (filename,mimetype,size,url,userId)VALUES(?,?,?,?,?);`
-    return await connection.execute(statement,[filename, mimetype, size, url, id])
+    return await connection.execute(statement, [filename, mimetype, size, url, id])
   }
   async getSpaceImageUrlByFileName(filename) {
     const statement = `SELECT url,id FROM space_img WHERE filename=?;`
@@ -76,6 +76,12 @@ class FileService{
     const [res] = await connection.execute(statement, [id])
     return res
   }
+  //根据动态id获取动态图片
+  async getMomentImgById(momentId) {
+    const statement = `SELECT * FROM moment_img WHERE momentId=?;`
+    const [res] = await connection.execute(statement, [momentId])
+    return res
+  }
 }
 
-module.exports=new FileService()
+module.exports = new FileService()
