@@ -1,9 +1,9 @@
 const connection = require('../app/database')
 
-class MomentService{
-  async createMoment(content,userId) {
-    const statement = `INSERT INTO moment (content,userId) VALUES(?,?);`
-    const [res] = await connection.execute(statement, [content, userId])
+class MomentService {
+  async createMoment(title, content, userId) {
+    const statement = `INSERT INTO moment (title,content,userId) VALUES(?,?,?);`
+    const [res] = await connection.execute(statement, [title, content, userId])
     return res
   }
   async getMomentListByUserId(userId) {
@@ -21,9 +21,9 @@ class MomentService{
     const [res] = await connection.execute(statement, [id])
     return res[0]
   }
-  async updateMomentById(content,id) {
+  async updateMomentById(content, id) {
     const statement = `UPDATE moment SET content=? WHERE id=?;`
-    const [res] = await connection.execute(statement, [content,id])
+    const [res] = await connection.execute(statement, [content, id])
     return res
   }
   async deleteMomentById(id) {
@@ -31,11 +31,11 @@ class MomentService{
     const [res] = await connection.execute(statement, [id])
     return res
   }
-  async bindLabel(labelId,momentId) {
+  async bindLabel(labelId, momentId) {
     const statement = `INSERT INTO moment_label (momentId,labelId) VALUES(?,?);`
     const [res] = await connection.execute(statement, [momentId, labelId])
     return res
   }
 }
 
-module.exports=new MomentService()
+module.exports = new MomentService()
