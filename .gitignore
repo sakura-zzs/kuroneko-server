@@ -11,7 +11,11 @@ src/test
 **/temp
 **/build
 **/dist
-
+# 忽略本地上传测试文件
+src/upload/avatar/
+src/upload/comment/
+src/upload/moment/
+src/upload/space/
 # 忽略编辑器配置文件
 .vscode/
 *.swp

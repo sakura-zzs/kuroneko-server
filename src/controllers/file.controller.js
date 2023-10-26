@@ -1,8 +1,10 @@
 const path = require('path')
+const fs = require('fs')
 const { saveMomentImage, getImageUrlByFileName, deleteMomentImageById, updateMomentIdById, saveCommentImage, getCommentImageUrlByFileName, deleteCommentImageById, updateCommentIdById, saveAvatarImage, getAvatarImageUrlByFileName, saveSpaceImage, getSpaceImageUrlByFileName, deleteSpaceImageById, getMomentImgById } = require('../services/file.service')
 const {
   APP_PORT,
   APP_HOST } = require('../app/config')
+const { MOMENT_PATH } = require('../constants/file-path')
 class FileController {
   async uploadMoment(ctx, next) {
     //获取上传文件
@@ -40,8 +42,17 @@ class FileController {
   }
   async deleteMoment(ctx, next) {
     const { id } = ctx.query
+    //删除图片在数据库的相关数据
     const res = await deleteMomentImageById(id)
-    ctx.body = res
+    //删除本地保存的图片数据
+    const filename = res.filename.split('.')[0]
+    const extname = res.filename.split('.')[1]
+    console.log(filename, extname)
+    fs.unlinkSync(`${MOMENT_PATH}/${res.filename}`)
+    fs.unlinkSync(`${MOMENT_PATH}/${filename}-large.${extname}`)
+    fs.unlinkSync(`${MOMENT_PATH}/${filename}-middle.${extname}`)
+    fs.unlinkSync(`${MOMENT_PATH}/${filename}-small.${extname}`)
+    ctx.body = '删除成功！'
   }
   async updateMomentId(ctx, next) {
     const { id } = ctx.query

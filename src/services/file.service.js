@@ -14,9 +14,11 @@ class FileService {
   }
   //根据id删除图片
   async deleteMomentImageById(id) {
+    const getFilename = `SELECT filename FROM moment_img WHERE id=?`
     const statement = `DELETE FROM moment_img WHERE id=?;`
-    const [res] = await connection.execute(statement, [id])
-    return res
+    const [filename] = await connection.execute(getFilename, [id])
+    await connection.execute(statement, [id])
+    return filename[0]
   }
   //富文本保存，将moment与moment_img进行绑定-更新moment_img的momentId
   async updateMomentIdById(id, momentId) {
