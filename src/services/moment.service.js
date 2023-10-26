@@ -12,7 +12,31 @@ class MomentService {
     return res
   }
   async getAllMoment() {
-    const statement = `SELECT m.*,JSON_OBJECT("url",a.url) avatar,JSON_OBJECT("id",p.id,"nickName",p.nickName,"sex",p.sex,"location",p.location,"selfProfile",p.selfProfile,"birth",p.birth) profile FROM moment m LEFT JOIN avatar_img a ON m.userId=a.userId LEFT JOIN profiles p ON m.userId=p.id ORDER BY m.createTime DESC;`
+    const statement = `SELECT
+    m.*,
+    JSON_OBJECT( "url", a.url ) avatar,
+    JSON_OBJECT(
+      "id",
+      p.id,
+      "nickName",
+      p.nickName,
+      "sex",
+      p.sex,
+      "location",
+      p.location,
+      "selfProfile",
+      p.selfProfile,
+      "birth",
+      p.birth 
+    ) PROFILE,
+  JSON_ARRAY(JSON_OBJECT("id",mi.id,"filename",mi.filename,"mimetype",mi.mimetype,"size",mi.size,"url",mi.url)) momentImg	
+  FROM
+    moment m
+    LEFT JOIN avatar_img a ON m.userId = a.userId
+    LEFT JOIN PROFILES p ON m.userId = p.id 
+    LEFT JOIN moment_img mi ON m.id=mi.momentId
+  ORDER BY
+    m.createTime DESC;`
     const [res] = await connection.execute(statement)
     return res
   }
