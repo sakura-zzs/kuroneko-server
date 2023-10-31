@@ -39,9 +39,11 @@ class FileService {
   }
   //根据id删除图片
   async deleteCommentImageById(id) {
+    const getFilename = `SELECT filename FROM comment_img WHERE id=?`
     const statement = `DELETE FROM comment_img WHERE id=?;`
-    const [res] = await connection.execute(statement, [id])
-    return res
+    const [filename] = await connection.execute(getFilename, [id])
+    await connection.execute(statement, [id])
+    return filename[0]
   }
   //富文本保存，将comment与comment_img进行绑定-更新comment_img的commentId
   //绑定评论id，还需要检测该评论是否为该用户所创

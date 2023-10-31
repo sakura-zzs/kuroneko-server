@@ -4,7 +4,7 @@ const { saveMomentImage, getImageUrlByFileName, deleteMomentImageById, updateMom
 const {
   APP_PORT,
   APP_HOST } = require('../app/config')
-const { MOMENT_PATH } = require('../constants/file-path')
+const { MOMENT_PATH, COMMENT_PATH } = require('../constants/file-path')
 class FileController {
   async uploadMoment(ctx, next) {
     //获取上传文件
@@ -47,7 +47,6 @@ class FileController {
     //删除本地保存的图片数据
     const filename = res.filename.split('.')[0]
     const extname = res.filename.split('.')[1]
-    console.log(filename, extname)
     fs.unlinkSync(`${MOMENT_PATH}/${res.filename}`)
     fs.unlinkSync(`${MOMENT_PATH}/${filename}-large.${extname}`)
     fs.unlinkSync(`${MOMENT_PATH}/${filename}-middle.${extname}`)
@@ -80,7 +79,9 @@ class FileController {
   async deleteComment(ctx, next) {
     const { id } = ctx.query
     const res = await deleteCommentImageById(id)
-    ctx.body = res
+    //删除本地保存的图片数据
+    fs.unlinkSync(`${COMMENT_PATH}/${res.filename}`)
+    ctx.body = "删除成功~"
   }
   async updateCommentId(ctx, next) {
     const { id } = ctx.query
