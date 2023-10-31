@@ -60,17 +60,17 @@ class FileController {
     ctx.body = res
   }
   async uploadComment(ctx, next) {
+
     const { id } = ctx.user
-    //保存多文件上传路径
+
     const urlList = []
-    for (let file of ctx.files) {
-      const { filename, mimetype, size } = file
-      const url = `${APP_HOST}:${APP_PORT}/${filename}`
-      await saveCommentImage(filename, mimetype, size, url, id)
-      const fileUrl = await getCommentImageUrlByFileName(filename)
-      urlList.push(fileUrl)
-    }
-    // console.log(urlList)
+
+    const { filename, mimetype, size } = ctx.file
+    const url = `${APP_HOST}:${APP_PORT}/${filename}`
+    await saveCommentImage(filename, mimetype, size, url, id)
+    const fileUrl = await getCommentImageUrlByFileName(filename)
+    urlList.push(fileUrl)
+
     //返回文件地址数组
     ctx.body = {
       imgLinks: urlList

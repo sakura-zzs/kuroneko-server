@@ -14,7 +14,7 @@ fileRouter.delete('/moment', verifyAuth, verifyPermission, deleteMoment)
 fileRouter.patch('/moment', verifyAuth, verifyPermission, updateMomentId)
 
 //comment图片
-fileRouter.post('/comment', verifyAuth, uploadCommentHandler, uploadResize, uploadComment)
+fileRouter.post('/comment', verifyAuth, uploadCommentHandler, uploadComment)
 fileRouter.delete('/comment', verifyAuth, verifyPermission, deleteComment)
 fileRouter.patch('/comment', verifyAuth, verifyPermission, updateCommentId)
 
