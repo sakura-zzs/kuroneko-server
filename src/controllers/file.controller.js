@@ -80,8 +80,7 @@ class FileController {
     const { id } = ctx.query
     const res = await deleteCommentImageById(id)
     //删除本地保存的图片数据
-    console.log(res)
-    // fs.unlinkSync(`${COMMENT_PATH}/${res.filename}`)
+    fs.unlinkSync(`${COMMENT_PATH}/${res.filename}`)
     ctx.body = "删除成功~"
   }
   async updateCommentId(ctx, next) {

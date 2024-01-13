@@ -34,8 +34,7 @@ class CommentController{
   }
   async getTopCmtOfMoment(ctx, next) {
     const { momentId } = ctx.params
-    const {offset,limit}=ctx.query
-    const res = await getTopCommentByMomentId(momentId,offset,limit)
+    const res = await getTopCommentByMomentId(momentId)
     ctx.body=res
   }
   async update(ctx, next) {

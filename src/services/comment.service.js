@@ -30,13 +30,13 @@ class CommentService{
       UNION ALL
       SELECT c.* FROM comment c INNER JOIN cte ON c.commentId = cte.id
     )
-    SELECT * FROM cte;`
+    SELECT * FROM cte WHERE commentId IS NOT NULL ORDER BY id DESC;`
     const [res] = await connection.execute(statement, [id])
     return res
   }
-  async getTopCommentByMomentId(momentId,offset,limit) {
-    const statement = `SELECT * FROM comment WHERE momentId=? AND commentId IS NULL ORDER BY id DESC LIMIT ?,?;`
-    const [res] = await connection.execute(statement, [momentId,offset,limit])
+  async getTopCommentByMomentId(momentId) {
+    const statement = `SELECT * FROM comment WHERE momentId=? AND commentId IS NULL ORDER BY id DESC;`
+    const [res] = await connection.execute(statement, [momentId])
     return res
   }
   async updateCommentById(content,commentId) {
