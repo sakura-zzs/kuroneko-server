@@ -14,9 +14,7 @@ class MomentController {
     ctx.body = res
   }
   async getMomentList(ctx, next) {
-    console.log(1)
     const res = await getAllMoment()
-    console.log(res)
     ctx.body = res
   }
   async getMoment(ctx, next) {
