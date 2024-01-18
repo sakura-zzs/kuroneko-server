@@ -82,7 +82,7 @@ const verifyPermission = async (ctx, next) => {
   const { id } = ctx.user
   let resourceId = ""
   let tableName = ""
-  if (ctx.query) {
+  if (ctx.query.id) {
     resourceId = ctx.query.id
   } else {
     resourceId = ctx.params.id ? ctx.params.id : ctx.params.commentId

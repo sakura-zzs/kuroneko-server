@@ -8,7 +8,7 @@ class UserService {
     return res[0]
   }
   async getUserProfile(id) {
-    const statement = 'SELECT u.*,JSON_OBJECT("id",p.id,"nickName",p.nickName,"sex",p.sex,"location",p.location,"selfProfile",p.selfProfile,"birth",p.birth) profile,JSON_OBJECT("id",a.id,"filename",a.filename,"mimetype",a.mimetype,"size",a.size,"url",a.url) FROM users u RIGHT JOIN profiles p ON u.userId=p.id LEFT JOIN avatar_img a ON u.userId=a.userId WHERE u.userId=?;;'
+    const statement = 'SELECT u.*,JSON_OBJECT("id",p.id,"nickName",p.nickName,"sex",p.sex,"location",p.location,"selfProfile",p.selfProfile,"birth",p.birth) profile,JSON_OBJECT("id",a.id,"filename",a.filename,"mimetype",a.mimetype,"size",a.size,"url",a.url) avatar FROM users u RIGHT JOIN profiles p ON u.userId=p.id LEFT JOIN avatar_img a ON u.userId=a.userId WHERE u.userId=?;;'
     const res = await connection.execute(statement, [id])
     return res[0]
   }

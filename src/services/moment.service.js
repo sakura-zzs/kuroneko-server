@@ -46,7 +46,7 @@ class MomentService {
       )) momentImg,
     JSON_ARRAYAGG(
     JSON_OBJECT( "id", l.id, "name", l.NAME )) labelList,
-    ( SELECT COUNT( c.id ) FROM COMMENT c WHERE c.momentId = m.id ) commentCount 
+    ( SELECT COUNT( c.id ) FROM comment c WHERE c.momentId = m.id ) commentCount 
   FROM
     moment m
     LEFT JOIN avatar_img a ON m.userId = a.userId

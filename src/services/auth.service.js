@@ -12,6 +12,7 @@ class AuthService {
       console.log(user_comment)
       flag = user_comment.length
     }
+
     return flag
   }
 }
