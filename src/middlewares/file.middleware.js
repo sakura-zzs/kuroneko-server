@@ -112,7 +112,6 @@ const uploadResize = async (ctx, next) => {
 //使用jimp库进行圆形裁剪生成头像
 const circleCutAvatar = async (ctx, next) => {
   const file = ctx.file;
-
   //获取原图路径和后缀名
   const type = path.extname(file.filename)
   const filename = file.filename.replace(type, "")
@@ -122,6 +121,7 @@ const circleCutAvatar = async (ctx, next) => {
   jimp.read(file.path).then(image => {
     image.resize(100, jimp.AUTO).circle({ radius: 50, x: 50, y: 50 }).write(`${originPath}-avatar${type}`)
   })
+
   await next()
 }
 

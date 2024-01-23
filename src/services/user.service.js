@@ -23,6 +23,22 @@ class UserService {
     const res = await connection.execute(statement, [email])
     return res[0][0]
   }
+  async updateUserProfile(id, nickName, sex, location, selfProfile, birth) {
+    const statement = `SELECT * FROM profiles WHERE id=?;`
+    const [res] = await connection.execute(statement, [id])
+    //创建用户个人信息
+    if (!res.length) {
+      const profileStatement = `INSERT INTO profiles (id,nickName,sex,location,selfProfile,birth) VALUES(?,?,?,?,?,?);`
+      const createRes = await connection.execute(profileStatement, [id, nickName, sex, location, selfProfile, birth])
+      return createRes[0]
+    }
+    console.log(id, nickName, sex, location, selfProfile, birth)
+    //更新用户个人信息
+    const profileStatement = `UPDATE profiles SET nickName=?,sex=?,location=?,selfProfile=?,birth=? WHERE id=?;`
+    const updataeRes = await connection.execute(profileStatement, [nickName, sex, location, selfProfile, birth, id])
+    console.log(updataeRes)
+    return updataeRes[0]
+  }
 }
 
 module.exports = new UserService()

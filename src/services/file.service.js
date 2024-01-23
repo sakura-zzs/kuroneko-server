@@ -54,6 +54,7 @@ class FileService {
   }
   async saveAvatarImage(...data) {
     //将图片地址保存至数据库
+    console.log(data)
     const [filename, mimetype, size, url, id] = data
     const statement = `INSERT INTO avatar_img (filename,mimetype,size,url,userId)VALUES(?,?,?,?,?);`
     return await connection.execute(statement, [filename, mimetype, size, url, id])
@@ -62,6 +63,17 @@ class FileService {
     const statement = `SELECT url,id FROM avatar_img WHERE filename=?;`
     const res = await connection.execute(statement, [filename])
     return res[0][0]
+  }
+  //根据id删除原头像
+  async deleteAvatarImageById(userId) {
+    const getFilename = `SELECT filename FROM avatar_img WHERE userId=?`
+    const statement = `DELETE FROM avatar_img WHERE userId=?;`
+    const [filename] = await connection.execute(getFilename, [userId])
+    if (filename.length) {
+      await connection.execute(statement, [userId])
+      return filename
+    }
+    return 0
   }
   async saveSpaceImage(...data) {
     //将图片地址保存至数据库

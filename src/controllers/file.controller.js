@@ -1,10 +1,10 @@
 const path = require('path')
 const fs = require('fs')
-const { saveMomentImage, getImageUrlByFileName, deleteMomentImageById, updateMomentIdById, saveCommentImage, getCommentImageUrlByFileName, deleteCommentImageById, updateCommentIdById, saveAvatarImage, getAvatarImageUrlByFileName, saveSpaceImage, getSpaceImageUrlByFileName, deleteSpaceImageById, getMomentImgById } = require('../services/file.service')
+const { saveMomentImage, getImageUrlByFileName, deleteMomentImageById, updateMomentIdById, saveCommentImage, getCommentImageUrlByFileName, deleteCommentImageById, updateCommentIdById, saveAvatarImage, getAvatarImageUrlByFileName, saveSpaceImage, getSpaceImageUrlByFileName, deleteSpaceImageById, getMomentImgById, deleteAvatarImageById } = require('../services/file.service')
 const {
   APP_PORT,
   APP_HOST } = require('../app/config')
-const { MOMENT_PATH, COMMENT_PATH } = require('../constants/file-path')
+const { MOMENT_PATH, COMMENT_PATH, AVATAR_PATH } = require('../constants/file-path')
 class FileController {
   async uploadMoment(ctx, next) {
     //获取上传文件
@@ -91,6 +91,16 @@ class FileController {
   }
   async uploadAvatar(ctx, next) {
     const { id } = ctx.user
+    //删除原来的头像
+    const oldAvatarList = await deleteAvatarImageById(id)
+    if (oldAvatarList.length) {
+      oldAvatarList.forEach(v => {
+        const filename = v.filename.split('.')[0]
+        const externName = v.filename.split('.')[1]
+        fs.unlinkSync(`${AVATAR_PATH}/${v.filename}`)
+        fs.unlinkSync(`${AVATAR_PATH}/${filename}-avatar.${externName}`)
+      })
+    }
     const { filename, mimetype, size } = ctx.file
     //获取原图路径和后缀名
     const type = path.extname(filename)

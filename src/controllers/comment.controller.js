@@ -19,12 +19,15 @@ class CommentController {
   //再通过这个用户id获取到用户信息
   async getUserComment(ctx, next) {
     const { userId } = ctx.params
-    const { offset, limit } = ctx.query
-    const res = await getUserCommentList(userId, offset, limit)
-    res.forEach(item => {
-      if (item.comment !== null)
-        item.comment = JSON.parse(item.comment)
-    });
+    const res = await getUserCommentList(userId)
+    // try {
+    //   res.forEach(item => {
+    //     if (item.ReplyInfo.comment !== null)
+    //       item.ReplyInfo.comment = JSON.parse(item.ReplyInfo.comment)
+    //   })
+    // } catch (error) {
+    //   console.log(error)
+    // }
     ctx.body = res
   }
   async getCommentCmts(ctx, next) {

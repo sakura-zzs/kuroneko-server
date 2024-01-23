@@ -72,7 +72,6 @@ const verifyAuth = async (ctx, next) => {
     const err = new Error(UNAUTHORIZATION)
     return ctx.app.emit('error', err, ctx)
   }
-
   ctx.body = "验证授权通过！"
   await next()
 }
@@ -100,6 +99,8 @@ const verifyPermission = async (ctx, next) => {
     tableName = "moment"
   } else if (url.indexOf('/comment') != -1) {
     tableName = "comment"
+  } else if (url.indexOf('/user/profile') != -1) {
+    tableName = 'profiles'
   }
   const res = await checkResourcePermission(tableName, id, resourceId, commentId)
   if (!res) {
