@@ -1,6 +1,6 @@
 const errorType = require('../constants/error-type')
 //错误处理
-function errorHandle(err,ctx) {
+function errorHandle(err, ctx) {
   let status, message
   switch (err.message) {
     case errorType.EMAIL_OR_PASSWORD_IS_NULL:
@@ -43,6 +43,10 @@ function errorHandle(err,ctx) {
     case errorType.LABEL_IS_ADDED:
       status = 200;
       message = { code: 3002, msg: "动态已添加该标签！" }
+      break;
+    case errorType.WXUSER_IS_NOT_EXIST:
+      status = 200;
+      message = { code: 1008, msg: "此微信用户没有绑定账号！" }
       break;
     default:
       status = 404;

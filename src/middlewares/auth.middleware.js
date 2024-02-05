@@ -4,14 +4,16 @@ const {
   EMAIL_IS_EXIST,
   PASSWORD_IS_INCORRECT,
   UNAUTHORIZATION,
-  USER_IS_NOT_PERMISSION
+  USER_IS_NOT_PERMISSION,
+  WXUSER_IS_NOT_EXIST
 } = require('../constants/error-type')
 const { PUBLIC_KEY } = require('../app/config')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const userService = require('../services/user.service')
-const { checkResourcePermission } = require('../services/auth.service')
+const { checkResourcePermission, verifyWxUserLogin, saveOpenId } = require('../services/auth.service')
+const getOpenId = require('../utils/getOpenId')
 
 const verifyLogin = async (ctx, next) => {
 
@@ -110,9 +112,37 @@ const verifyPermission = async (ctx, next) => {
   ctx.body = "资源权限认证通过！"
   await next()
 }
+//根据appid、appsecret、code向微信服务器获取openid、session_key
+const verifyWxLogin = async (ctx, next) => {
+  const { code } = ctx.request.body
+  const { session_key, openid } = await getOpenId(code)
+  //校验该微信用户是否注册过
+  const userData = await verifyWxUserLogin(openid)
+  if (!userData) {
+    //没有注册过就进行绑定，用户没有注册过应该在页面提示进行登录操作绑定微信（注册），点击登录，输入账号密码，校验账号密码成功后，进行微信绑定，返回token
+    //小程序将token保存到本地，后续可以根据token状态来保持登录状态
+    const err = new Error(WXUSER_IS_NOT_EXIST)
+    return ctx.app.emit('error', err, ctx)
+  }
+  //注册过就进行登录，返回token
+  ctx.openid = openid
+  ctx.session_key = session_key
+  ctx.user = userData
+  await next()
+}
+//绑定微信用户，保存openid、session_key
+const bindWxUser = async (ctx, next) => {
+  const { code } = ctx.request.body
+  const { userId } = ctx.user
+  const { session_key, openid } = await getOpenId(code)
+  await saveOpenId(userId, session_key, openid)
+  await next()
+}
 
 module.exports = {
   verifyLogin,
   verifyAuth,
-  verifyPermission
+  verifyPermission,
+  verifyWxLogin,
+  bindWxUser
 }

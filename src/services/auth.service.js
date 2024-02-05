@@ -18,6 +18,17 @@ class AuthService {
 
     return flag
   }
+
+  async verifyWxUserLogin(openid) {
+    const statement = `SELECT * FROM users WHERE openid=?`
+    const [res] = await connection.execute(statement, [openid])
+    return res[0]
+  }
+  async saveOpenId(userId, session_key, openid) {
+    const statement = `UPDATE users SET openid=?,session_key=? WHERE userId=?;`
+    const [res] = await connection.execute(statement, [openid, session_key, userId])
+    return res
+  }
 }
 
 module.exports = new AuthService()
