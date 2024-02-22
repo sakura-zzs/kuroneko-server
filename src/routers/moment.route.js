@@ -1,6 +1,6 @@
 const route = require('@koa/router')
 const { verifyAuth, verifyPermission } = require('../middlewares/auth.middleware')
-const { create, getUserMomentList, getMomentList, getMoment, update, deleteMoment, addCustomLabel, addLabel } = require('../controllers/moment.controller')
+const { create, getUserMomentList, getMomentList, getMoment, update, deleteMoment, addCustomLabel, addLabel, updateHtml } = require('../controllers/moment.controller')
 const { verifyAddCustomLabelExists, verifyMomentAddedLabel } = require('../middlewares/label.middleware')
 
 const momentRouter = new route({ prefix: '/moment' })
@@ -16,6 +16,8 @@ momentRouter.get('/:id', getMoment)
 momentRouter.post('/', verifyAuth, create)
 //更新动态
 momentRouter.patch('/:id', verifyAuth, verifyPermission, update)
+//保存动态html格式内容
+momentRouter.patch('/:id/html', verifyAuth, verifyPermission, updateHtml)
 //删除动态
 momentRouter.delete('/:id', verifyAuth, verifyPermission, deleteMoment)
 //为动态添加标签

@@ -1,11 +1,11 @@
-const { createMoment, getMomentListByUserId, getAllMoment, getMomentById, updateMomentById, deleteMomentById, bindLabel } = require('../services/moment.service')
+const { createMoment, getMomentListByUserId, getAllMoment, getMomentById, updateMomentById, deleteMomentById, bindLabel, updateMomentHtmlById } = require('../services/moment.service')
 const { getLabelByName } = require('../services/label.service')
 
 class MomentController {
   async create(ctx, next) {
-    const { title, content } = ctx.request.body
+    const { title, content, html } = ctx.request.body
     const { id } = ctx.user
-    const res = await createMoment(title, content, id)
+    const res = await createMoment(title, content, id, html)
     ctx.body = res
   }
   async getUserMomentList(ctx, next) {
@@ -44,6 +44,12 @@ class MomentController {
     const labelId = ctx.labelId
     console.log(momentId, labelId)
     const res = await bindLabel(labelId, momentId)
+    ctx.body = res
+  }
+  async updateHtml(ctx, next) {
+    const { id } = ctx.params
+    const { html } = ctx.request.body
+    const res = await updateMomentHtmlById(html, id)
     ctx.body = res
   }
 }

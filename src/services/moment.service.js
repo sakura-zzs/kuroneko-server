@@ -1,9 +1,9 @@
 const connection = require('../app/database')
 
 class MomentService {
-  async createMoment(title, content, userId) {
-    const statement = `INSERT INTO moment (title,content,userId) VALUES(?,?,?);`
-    const [res] = await connection.execute(statement, [title, content, userId])
+  async createMoment(title, content, userId, html) {
+    const statement = `INSERT INTO moment (title,content,userId,html) VALUES(?,?,?,?);`
+    const [res] = await connection.execute(statement, [title, content, userId, html])
     return res
   }
   async getMomentListByUserId(userId) {
@@ -79,6 +79,11 @@ class MomentService {
   async bindLabel(labelId, momentId) {
     const statement = `INSERT INTO moment_label (momentId,labelId) VALUES(?,?);`
     const [res] = await connection.execute(statement, [momentId, labelId])
+    return res
+  }
+  async updateMomentHtmlById(html, id) {
+    const statement = `UPDATE moment SET html=? WHERE id=?;`
+    const [res] = await connection.execute(statement, [html, id])
     return res
   }
 }
