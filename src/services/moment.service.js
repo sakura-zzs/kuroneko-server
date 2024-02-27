@@ -1,9 +1,9 @@
 const connection = require('../app/database')
 
 class MomentService {
-  async createMoment(title, content, userId, html) {
-    const statement = `INSERT INTO moment (title,content,userId,html) VALUES(?,?,?,?);`
-    const [res] = await connection.execute(statement, [title, content, userId, html])
+  async createMoment(title, userId, html) {
+    const statement = `INSERT INTO moment (title,userId,html) VALUES(?,?,?);`
+    const [res] = await connection.execute(statement, [title, userId, html])
     return res
   }
   async getMomentListByUserId(userId) {
