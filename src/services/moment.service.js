@@ -4,6 +4,7 @@ class MomentService {
   async createMoment(title, userId, html) {
     const statement = `INSERT INTO moment (title,userId,html) VALUES(?,?,?);`
     const [res] = await connection.execute(statement, [title, userId, html])
+    console.log(res)
     return res
   }
   async getMomentListByUserId(userId) {
@@ -45,7 +46,7 @@ class MomentService {
         mi.url 
       )) momentImg,
     JSON_ARRAYAGG(
-    JSON_OBJECT( "id", l.id, "name", l.NAME )) labelList,
+    JSON_OBJECT( "id", l.id, "name", l.name,"icon",l.icon )) labelList,
     ( SELECT COUNT( c.id ) FROM comment c WHERE c.momentId = m.id ) commentCount 
   FROM
     moment m

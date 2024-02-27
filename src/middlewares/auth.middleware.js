@@ -70,6 +70,11 @@ const verifyAuth = async (ctx, next) => {
       algorithms: ['RS256']
     })
     ctx.user = res
+    //检测是否为微信用户,微信用户token里并没有帐号用户数据
+    if (res.openid) {
+      const userData = await verifyWxUserLogin(res.openid)
+      ctx.user = userData
+    }
   } catch (error) {
     const err = new Error(UNAUTHORIZATION)
     return ctx.app.emit('error', err, ctx)

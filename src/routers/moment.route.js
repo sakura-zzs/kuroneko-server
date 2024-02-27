@@ -15,6 +15,7 @@ momentRouter.get('/:id', getMoment)
 //创建动态
 momentRouter.post('/', verifyAuth, create)
 //更新动态
+momentRouter.put('/:id', verifyAuth, verifyPermission, update)
 momentRouter.patch('/:id', verifyAuth, verifyPermission, update)
 //保存动态html格式内容
 momentRouter.patch('/:id/html', verifyAuth, verifyPermission, updateHtml)

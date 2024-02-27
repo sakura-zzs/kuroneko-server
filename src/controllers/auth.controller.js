@@ -8,7 +8,7 @@ class AuthController {
     const { userId, email, pwd } = ctx.user
     //使用私钥颁发token
     const token = jwt.sign(
-      { id: userId, email, pwd },
+      { userId, email, pwd },
       PRIVATE_KEY,
       {
         //token过期时间，秒
@@ -40,7 +40,7 @@ class AuthController {
         algorithm: "RS256"
       }
     )
-    ctx.body = { token }
+    ctx.body = { token, user: ctx.user }
   }
 }
 

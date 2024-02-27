@@ -4,7 +4,7 @@ const { getLabelByName } = require('../services/label.service')
 class MomentController {
   async create(ctx, next) {
     const { title, html } = ctx.request.body
-    const { id } = ctx.user
+    const { userId: id } = ctx.user
     const res = await createMoment(title, id, html)
     ctx.body = res
   }
